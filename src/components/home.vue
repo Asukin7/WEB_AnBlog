@@ -67,6 +67,7 @@
           </Header>
           <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
             Content
+            <Button @click="logout">注销</Button><Button @click="test">test</Button>
           </Content>
         </Layout>
     </Layout>
@@ -96,6 +97,13 @@ export default {
   methods: {
     collapsedSider () {
       this.$refs.side1.toggleCollapse()
+    },
+    logout () {
+      this.$store.dispatch('logout') // 注销并删除token
+      this.$router.push('/login')
+    },
+    test () {
+      this.$get('/HelloWorld')
     }
   }
 }

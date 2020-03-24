@@ -10,14 +10,6 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   name: '首页',
-    //   component: index
-    //   // meta: {
-    //   //   isLogin: false
-    //   // }
-    // },
     {
       path: '/',
       name: '首页',
@@ -39,17 +31,14 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
-      // meta: {
-      //   isLogin: false
-      // }
     },
     {
       path: '/home',
       name: 'home',
-      component: home
-      // meta: {
-      //   isLogin: true
-      // }
+      component: home,
+      meta: {
+        isLogin: true // 需要登录
+      }
     }
   ]
 })

@@ -1,46 +1,41 @@
 import Vue from 'vue'
 import App from './App'
+import store from './store'
 import router from './router'
+import {getRequest, postRequest, putRequest, deleteRequest} from './request'
 import ViewUI from 'view-design'
 import 'view-design/dist/styles/iview.css'
 
 Vue.use(ViewUI)
 Vue.config.productionTip = false
+Vue.prototype.$get = getRequest
+Vue.prototype.$post = postRequest
+Vue.prototype.$put = putRequest
+Vue.prototype.$delete = deleteRequest
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'
 })
 
 router.beforeEach((to, from, next) => {
-  // 获取用户登录成功后储存的登录标志
-  let getFlag = localStorage.getItem('Flag')
-  // 如果登录标志存在且为isLogin，即用户已登录
-  if (getFlag === 'isLogin') {
-    // 设置vuex登录状态为已登录
-    // store.state.isLogin = true
+  // 获取token
+  let token = localStorage.getItem('token')
+  // token 存在且不为空则已登录 不存在或为空则未登录
+  if (token !== null && token !== '') { // 已登录
     next()
-    // 如果已登录，还想想进入登录注册界面，则定向回首页
-    if (!to.meta.isLogin) {
-      // iViewUi友好提示
-      ViewUI.Message.error('请先退出登录')
-      next({
-        path: '/home'
-      })
-    }
-  // 如果登录标志不存在，即未登录
-  } else {
-    // 用户想进入需要登录的页面，则定向回登录界面
+  } else { // 未登录
+    // 用户进入需要登录的页面，则跳转登录界面
     if (to.meta.isLogin) {
       next({
         path: '/login'
       })
-      // iViewUi友好提示
-      ViewUI.Message.info('请先登录')
-    // 用户进入无需登录的界面，则跳转继续
+      ViewUI.Message.info('请登录')
+    // 用户进入无需登录的界面，则继续
     } else {
       next()
     }

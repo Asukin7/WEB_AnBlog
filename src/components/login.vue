@@ -2,9 +2,9 @@
   <div>
     <div class="box">
       <h1>请登录</h1>
-      <input type="text" name="username" placeholder="账号">
-      <input type="password" name="password" placeholder="密码">
-      <div class="button" name="">登录</div>
+      <input type="text" placeholder="账号" v-model="username">
+      <input type="password" placeholder="密码" v-model="password">
+      <div class="button" @click="login">登录</div>
       <a href="#">立即注册</a>
       <a href="#">忘记密码</a>
     </div>
@@ -14,6 +14,22 @@
 export default {
   data () {
     return {
+      username: null,
+      password: null
+    }
+  },
+  methods: {
+    login () {
+      this.$post('/tourist/login', {username: this.username, password: this.password})
+        .then(data => {
+          if (data.data.code === 0) { // 登录成功
+            this.$store.dispatch('login', data.data.data.token) // 登录并存储token
+            this.$Message.success(data.data.message)
+            this.$router.push('/home')
+          } else { // 登录失败
+            this.$Message.error(data.data.message)
+          }
+        })
     }
   }
 }
