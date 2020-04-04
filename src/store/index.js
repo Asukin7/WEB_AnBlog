@@ -7,7 +7,7 @@ const store = new Vuex.Store({
   // 属性
   state: {
     // token
-    token: ''
+    token: null
   },
   // 获取属性
   getters: {
@@ -30,7 +30,7 @@ const store = new Vuex.Store({
     },
     // 注销
     logout ({commit}) {
-      commit('setToken', '')
+      commit('setToken', null)
     }
   }
 })

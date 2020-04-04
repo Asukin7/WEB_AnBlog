@@ -3,7 +3,7 @@
     <div class="box">
       <h1>请登录</h1>
       <input type="text" placeholder="账号" v-model="username">
-      <input type="password" placeholder="密码" v-model="password">
+      <input type="password" placeholder="密码" v-model="password" @keyup.enter="login">
       <div class="button" @click="login">登录</div>
       <a href="#">立即注册</a>
       <a href="#">忘记密码</a>
@@ -23,7 +23,8 @@ export default {
       this.$post('/tourist/login', {username: this.username, password: this.password})
         .then(data => {
           if (data.data.code === 0) { // 登录成功
-            this.$store.dispatch('login', data.data.data.token) // 登录并存储token
+            // this.$store.dispatch('login', data.data.data.token) // 登录并存储token
+            localStorage.setItem('token', data.data.data.token) // 登录并存储token
             this.$Message.success(data.data.message)
             this.$router.push('/home')
           } else { // 登录失败

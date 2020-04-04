@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-import store from './store'
+// import store from './store'
 import router from './router'
 import {getRequest, postRequest, putRequest, deleteRequest} from './request'
 import ViewUI from 'view-design'
@@ -16,7 +16,7 @@ Vue.prototype.$delete = deleteRequest
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  store,
+  // store,
   router,
   components: { App },
   template: '<App/>'

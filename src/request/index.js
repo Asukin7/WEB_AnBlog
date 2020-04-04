@@ -27,7 +27,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   // 请求成功
   response => {
-    console.log(response)
     errorHandle(response.data.code, response.data.message)
     return response
   },
@@ -60,8 +59,8 @@ const errorHandle = (code, message) => {
 }
 
 const logout = () => {
-  // 删除token
-  localStorage.removeItem('Authorization')
+  // 注销并删除token
+  localStorage.removeItem('token')
   // 跳转登录页面
   router.replace({
     path: '/login',

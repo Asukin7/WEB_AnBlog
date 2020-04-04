@@ -3,8 +3,11 @@ import Router from 'vue-router'
 import index from '@/components/index'
 import indexCategory from '@/components/indexCategory'
 import indexTags from '@/components/indexTags'
+import indexBlog from '@/components/indexBlog'
 import login from '@/components/login'
 import home from '@/components/home'
+import homeBlogEditHtml from '@/components/homeBlogEditHtml'
+import homeBlogListState from '@/components/homeBlogListState'
 
 Vue.use(Router)
 
@@ -24,6 +27,11 @@ export default new Router({
           path: 'indexTags',
           name: '标签',
           component: indexTags
+        },
+        {
+          path: 'indexBlog/:id',
+          name: '博客',
+          component: indexBlog
         }
       ]
     },
@@ -39,6 +47,61 @@ export default new Router({
       meta: {
         isLogin: true // 需要登录
       }
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: home,
+      meta: {
+        isLogin: true // 需要登录
+      },
+      children: [
+        {
+          path: 'blog/edit/html',
+          name: 'homeBlogEditHtmlInsert',
+          component: homeBlogEditHtml,
+          meta: {
+            isLogin: true, // 需要登录
+            keepAlive: false
+          }
+        },
+        {
+          path: 'blog/edit/html/:id',
+          name: 'homeBlogEditHtmlUpdate',
+          component: homeBlogEditHtml,
+          meta: {
+            isLogin: true, // 需要登录
+            keepAlive: false
+          }
+        },
+        {
+          path: 'blogList/state/0',
+          name: 'homeBlogListState0',
+          component: homeBlogListState,
+          meta: {
+            isLogin: true, // 需要登录
+            keepAlive: false
+          }
+        },
+        {
+          path: 'blogList/state/1',
+          name: 'homeBlogListState1',
+          component: homeBlogListState,
+          meta: {
+            isLogin: true, // 需要登录
+            keepAlive: false
+          }
+        },
+        {
+          path: 'blogList/state/2',
+          name: 'homeBlogListState2',
+          component: homeBlogListState,
+          meta: {
+            isLogin: true, // 需要登录
+            keepAlive: false
+          }
+        }
+      ]
     }
   ]
 })

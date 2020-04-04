@@ -12,10 +12,10 @@
         </Col>
         <Col :xs="{span: 8, order: 3}" :lg="{span: 9, order: 2}">
           <div class="nav-left">
-            <div class="nav-item" :class="navAction=='首页'?'link-pink-action':'link-pink'" @click="goPath('/')">
+            <div class="nav-item" :class="$route.name=='首页'?'link-pink-action':'link-pink'" @click="goPath('/')">
               首页
             </div>
-            <div class="nav-item" :class="navAction=='标签'?'link-pink-action':'link-pink'" @click="goPath('/indexTags')">
+            <div class="nav-item" :class="$route.name=='标签'?'link-pink-action':'link-pink'" @click="goPath('/indexTags')">
               标签
             </div>
           </div>
@@ -32,8 +32,11 @@
         <Col :xs="{span: 16, order: 2}" :lg="{span: 3, order: 4}">
           <div class="nav-right">
             <div class="nav-item">
-              <div class="btn-pink" @click="goPath('login')">
+              <div v-if="user==null" class="btn-pink" @click="goPath('/login')">
                 登录
+              </div>
+              <div v-else class="btn-pink-ghost" @click="goPath('/home')">
+                {{user.nickname}}
               </div>
             </div>
           </div>
@@ -45,8 +48,22 @@
         <router-view></router-view>
       </template>
     </div>
-    <div class="layout-footer margin-top" style="padding: 20px; display: flex; justify-content: center; align-items: center;">
-      <div><a class="link-pink" href="http://beian.miit.gov.cn">粤ICP备20011882号</a></div>
+    <div class="layout-footer margin-top" style="padding: 20px;">
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44162202000050" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+          <img src="http://nnsststt.cn/images/beiantubiao.png" style="float:left;"/>
+          <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+            粤公网安备44162202000050号
+          </p>
+        </a>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <a target="_blank" href="http://beian.miit.gov.cn" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+          <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+            粤ICP备20011882号
+          </p>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -54,13 +71,27 @@
 export default {
   data () {
     return {
-      navAction: this.$route.name
+      user: null
+    }
+  },
+  mounted () {
+    // 获取token
+    var token = localStorage.getItem('token')
+    // token 存在且不为空则已登录
+    if (token !== null && token !== '') { // 已登录
+      this.$get('/user/info')
+        .then(data => {
+          if (data.data.code === 0) { // 成功
+            this.user = data.data.data.user
+          } else { // 失败
+            this.$Message.error(data.data.message) // 提示
+          }
+        })
     }
   },
   methods: {
     goPath (path) {
       this.$router.push({path: path})
-      this.navAction = this.$route.name
     }
   }
 }
@@ -107,6 +138,7 @@ export default {
   z-index: 200;
 }
 .layout-content {
+  min-height: 100vh;
   background: #f2f2f2;
 }
 .layout-footer {
@@ -142,6 +174,11 @@ export default {
 .list-item-action {
   background: #eea2a4;
   color: #fff;
+}
+.list-item-footer {
+  display: flex;
+  justify-content: space-between;
+  color: #8C8787;
 }
 .link-pink {
   width: 40px;
