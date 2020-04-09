@@ -96,7 +96,7 @@ export default {
             this.getBlogList() // 刷新页面
           } else { // 失败
             this.$Message.error(data.data.message) // 提示
-            this.blog.state = saveState // 恢复状态
+            this.blogList[index].state = saveState // 恢复状态
           }
         })
     },

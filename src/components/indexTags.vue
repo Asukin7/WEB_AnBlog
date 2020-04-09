@@ -4,8 +4,8 @@
       <List class="list margin-top margin-left margin-right" border>
         <ListItem>
           <div style="display: flex; flex-wrap: wrap;">
-            <div :class="tagsAction==item?'btn-pink':'btn-pink-ghost'" style="margin: 5px;" v-for="item in tagsList" :key="item" @click="tagsChange(item)">
-              {{item}}
+            <div :class="tagsIdAction==item.id?'btn-pink':'btn-pink-ghost'" style="margin: 5px;" v-for="item in tagsList" :key="item.id" @click="tagsChange(item.id)">
+              {{item.name}}
             </div>
           </div>
         </ListItem>
@@ -13,26 +13,33 @@
     </Col>
     <Col :xs="24" :lg="24">
       <List class="list margin-top margin-left margin-right" item-layout="vertical" border>
-        <div class="list-item border-bottom" v-for="item in blogList" :key="item.title">
+        <div class="list-item border-bottom" v-for="item in blogList" :key="item.title" @click="goBlogView(item.id)">
           <ListItem>
-            <ListItemMeta :avatar="item.avatar" :title="item.title" :description="item.description"/>
-            {{ item.content }}
-            <template slot="action">
-              <li>
-                <Icon type="ios-star-outline"/> 123
-              </li>
-              <li>
-                <Icon type="ios-thumbs-up-outline"/> 234
-              </li>
-              <li>
-                <Icon type="ios-chatbubbles-outline"/> 345
-              </li>
-            </template>
+            <div class="text-title margin-bottom">
+              {{item.title}}
+            </div>
+            <div class="text-summary twoLineText margin-bottom">
+              {{item.summary}}
+            </div>
+            <div class="infoAndOper">
+              <div class="infoAndOper-item">
+                <Avatar class="margin-right" :src="item.user.profilePhoto" icon="ios-person" size="small"/>
+                <div>{{item.user.nickname}}</div>
+              </div>
+              <div class="infoAndOper-item">
+                <div class="margin-right"><Icon type="ios-eye-outline"/> {{item.viewNumber==null?'0':item.viewNumber}}</div>
+                <!-- <div class="margin-left margin-right"><Icon type="ios-thumbs-up-outline"/> 222</div> -->
+                <div class="margin-left"><Icon type="ios-chatbubbles-outline"/> {{item.commentNumber==null?'0':item.commentNumber}}</div>
+              </div>
+            </div>
           </ListItem>
         </div>
       </List>
-      <div class="loadMore margin-top margin-left margin-right">
+      <div v-if="blogTotal>blogList.length" class="loadMore margin-top margin-left margin-right" @click="getMoreBlogList">
         加载更多
+      </div>
+      <div v-else class="loadMore margin-top margin-left margin-right">
+        已经是最底了
       </div>
     </Col>
   </Row>
@@ -41,76 +48,59 @@
 export default {
   data () {
     return {
-      tagsList: [
-        'HTML5', 'CSS', 'JavaScript', 'jQuery', 'Vue', 'Echarts',
-        'Android', '微信小程序',
-        'Java', 'SSM', 'SpringBoot', 'C', 'C++', 'C#', 'Qt', 'Linux',
-        'Mysql', 'Redis',
-        'Git',
-        '其他'
-      ],
-      tagsAction: null,
-      blogList: [
-        {
-          title: 'This is title 1',
-          description: 'This is description, this is description, this is description.',
-          avatar: 'https://nnsststt.cn/images/aisakaTaiga.jpg',
-          content: 'This is the content, this is the content, this is the content, this is the content.'
-        },
-        {
-          title: 'This is title 2',
-          description: 'This is description, this is description, this is description.',
-          avatar: 'https://nnsststt.cn/images/aisakaTaiga.jpg',
-          content: 'This is the content, this is the content, this is the content, this is the content.'
-        },
-        {
-          title: 'This is title 3',
-          description: 'This is description, this is description, this is description.',
-          avatar: 'https://nnsststt.cn/images/aisakaTaiga.jpg',
-          content: 'This is the content, this is the content, this is the content, this is the content.'
-        },
-        {
-          title: 'This is title 4',
-          description: 'This is description, this is description, this is description.',
-          avatar: 'https://nnsststt.cn/images/aisakaTaiga.jpg',
-          content: 'This is the content, this is the content, this is the content, this is the content.'
-        },
-        {
-          title: 'This is title 5',
-          description: 'This is description, this is description, this is description.',
-          avatar: 'https://nnsststt.cn/images/aisakaTaiga.jpg',
-          content: 'This is the content, this is the content, this is the content, this is the content.'
-        },
-        {
-          title: 'This is title 6',
-          description: 'This is description, this is description, this is description.',
-          avatar: 'https://nnsststt.cn/images/aisakaTaiga.jpg',
-          content: 'This is the content, this is the content, this is the content, this is the content.'
-        },
-        {
-          title: 'This is title 7',
-          description: 'This is description, this is description, this is description.',
-          avatar: 'https://nnsststt.cn/images/aisakaTaiga.jpg',
-          content: 'This is the content, this is the content, this is the content, this is the content.'
-        },
-        {
-          title: 'This is title 8',
-          description: 'This is description, this is description, this is description.',
-          avatar: 'https://nnsststt.cn/images/aisakaTaiga.jpg',
-          content: 'This is the content, this is the content, this is the content, this is the content.'
-        },
-        {
-          title: 'This is title 9',
-          description: 'This is description, this is description, this is description.',
-          avatar: 'https://nnsststt.cn/images/aisakaTaiga.jpg',
-          content: 'This is the content, this is the content, this is the content, this is the content.'
-        }
-      ]
+      tagsList: [],
+      tagsIdAction: null,
+      blogList: [],
+      blogTotal: 0,
+      page: 1,
+      size: 10
     }
   },
+  mounted () {
+    this.getBlogList()
+    this.getTagsListByRand()
+  },
   methods: {
-    tagsChange (tags) {
-      this.tagsAction = tags
+    getTagsListByRand () {
+      this.$get('/tourist/tagsList/rand')
+        .then(data => {
+          this.tagsList = data.data.data.tagsList
+        })
+    },
+    getBlogList () {
+      var tagsQuery = ''
+      if (this.tagsIdAction != null) {
+        tagsQuery = '?tagsId=' + this.tagsIdAction
+      }
+      this.$get('/tourist/blogList' + tagsQuery)
+        .then(data => {
+          this.blogList = data.data.data.blogList
+          this.blogTotal = data.data.data.blogTotal
+        })
+    },
+    getMoreBlogList () {
+      var tagsQuery = ''
+      if (this.tagsIdAction != null) {
+        tagsQuery = '&tagsId=' + this.tagsIdAction
+      }
+      this.page++
+      this.$get('/tourist/blogList' + '?page=' + this.page + '&size=' + this.size + tagsQuery)
+        .then(data => {
+          this.blogList = this.blogList.concat(data.data.data.blogList)
+          this.blogTotal = data.data.data.blogTotal
+        })
+    },
+    tagsChange (id) {
+      if (this.tagsIdAction === id) {
+        this.tagsIdAction = null
+      } else {
+        this.tagsIdAction = id
+      }
+      this.page = 1
+      this.getBlogList()
+    },
+    goBlogView (id) {
+      this.$router.push({path: '/indexBlog/' + id})
     }
   }
 }

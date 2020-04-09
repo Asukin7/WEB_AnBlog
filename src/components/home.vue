@@ -12,7 +12,7 @@
               <Icon type="ios-contact" />
               <span>账号</span>
             </template>
-            <MenuItem name="1-1"><span>资料</span></MenuItem>
+            <MenuItem name="homeUserInfoEdit"><span>资料</span></MenuItem>
             <MenuItem name="1-2"><span>安全</span></MenuItem>
           </Submenu>
           <Submenu name="2">
@@ -121,7 +121,6 @@ export default {
       this.$refs.side1.toggleCollapse()
     },
     logout () {
-      // this.$store.dispatch('logout') // 注销并删除token
       localStorage.removeItem('token') // 注销并删除token
       this.$router.push('/login')
     },
@@ -129,6 +128,10 @@ export default {
       switch (MenuItemName) {
         case 'index': {
           this.$router.push({path: '/'})
+          break
+        }
+        case 'homeUserInfoEdit': {
+          this.$router.push({path: '/home/user/info/edit'})
           break
         }
         case 'homeBlogEditHtmlInsert': {

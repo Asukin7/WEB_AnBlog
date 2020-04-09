@@ -175,10 +175,14 @@ export default {
   background: #eea2a4;
   color: #fff;
 }
-.list-item-footer {
+.infoAndOper {
   display: flex;
   justify-content: space-between;
-  color: #8C8787;
+}
+.infoAndOper-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .link-pink {
   width: 40px;
@@ -262,6 +266,31 @@ export default {
   background: #fff6f6;
   color: #eea2a4;
   cursor: pointer;
+}
+.oneLineText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.twoLineText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.text-title {
+  font-size: 120%;
+  font-weight: bold;
+  color: #515151;
+}
+.text-summary {
+  font-size: 100%;
+  color: #515a6e;
+}
+.text-info {
+  font-size: 100%;
+  color: #8C8787;
 }
 .padding-top {
   padding-top: 10px;

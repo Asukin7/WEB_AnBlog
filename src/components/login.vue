@@ -23,7 +23,6 @@ export default {
       this.$post('/tourist/login', {username: this.username, password: this.password})
         .then(data => {
           if (data.data.code === 0) { // 登录成功
-            // this.$store.dispatch('login', data.data.data.token) // 登录并存储token
             localStorage.setItem('token', data.data.data.token) // 登录并存储token
             this.$Message.success(data.data.message)
             this.$router.push('/home')
@@ -42,7 +41,6 @@ body {
   background: #f2f2f2;
   background-size: cover;
 }
-
 .box {
   width: 450px;
   padding: 30px;
@@ -54,7 +52,6 @@ body {
   text-align: center;
   border-radius: 20px;
 }
-
 .box h1 {
   color: white;
   text-transform: uppercase;
@@ -62,7 +59,6 @@ body {
   margin-top: 10px;
   margin-bottom: 30px;
 }
-
 .box input[type="text"],
 .box input[type="password"] {
   border: 0;
@@ -78,13 +74,11 @@ body {
   border-radius: 30px;
   transition: 0.25s;
 }
-
 .box input[type="text"]:focus,
 .box input[type="password"]:focus {
   width: 300px;
   border-color: #2ecc71;
 }
-
 .box .button {
   border: 0;
   background: none;
@@ -99,12 +93,10 @@ body {
   border-radius: 30px;
   transition: 0.25s;
 }
-
 .box .button:hover {
   background: #2ecc71;
   cursor: pointer;
 }
-
 .box a {
   margin: 10px;
   color: #aaaaaa;
