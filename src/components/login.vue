@@ -2,11 +2,11 @@
   <div>
     <div class="box">
       <h1>请登录</h1>
-      <input type="text" placeholder="账号" v-model="username">
-      <input type="password" placeholder="密码" v-model="password" @keyup.enter="login">
+      <input type="text" maxlength="16" placeholder="账号" v-model="username">
+      <input type="password" maxlength="16" placeholder="密码" v-model="password" @keyup.enter="login">
       <div class="button" @click="login">登录</div>
-      <a href="#">立即注册</a>
-      <a href="#">忘记密码</a>
+      <a @click="goRegister">立即注册</a>
+      <a @click="goResetPassword">忘记密码</a>
     </div>
   </div>
 </template>
@@ -30,6 +30,12 @@ export default {
             this.$Message.error(data.data.message)
           }
         })
+    },
+    goRegister () {
+      this.$router.push('/register')
+    },
+    goResetPassword () {
+      this.$router.push('/resetPassword')
     }
   }
 }

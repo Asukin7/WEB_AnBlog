@@ -5,8 +5,11 @@ import indexCategory from '@/components/indexCategory'
 import indexTags from '@/components/indexTags'
 import indexBlog from '@/components/indexBlog'
 import login from '@/components/login'
+import register from '@/components/register'
+import resetPassword from '@/components/resetPassword'
 import home from '@/components/home'
 import homeUserInfoEdit from '@/components/homeUserInfoEdit'
+import homeUserSafeEdit from '@/components/homeUserSafeEdit'
 import homeBlogEditHtml from '@/components/homeBlogEditHtml'
 import homeBlogListState from '@/components/homeBlogListState'
 
@@ -43,6 +46,18 @@ export default new Router({
       name: 'login',
       component: login
     },
+    // register
+    {
+      path: '/register',
+      name: 'register',
+      component: register
+    },
+    // resetPassword
+    {
+      path: '/resetPassword',
+      name: 'resetPassword',
+      component: resetPassword
+    },
     // home
     {
       path: '/home',
@@ -65,6 +80,15 @@ export default new Router({
           path: 'user/info/edit',
           name: 'homeUserInfoEdit',
           component: homeUserInfoEdit,
+          meta: {
+            isLogin: true, // 需要登录
+            keepAlive: false
+          }
+        },
+        {
+          path: 'user/safe/edit',
+          name: 'homeUserSafeEdit',
+          component: homeUserSafeEdit,
           meta: {
             isLogin: true, // 需要登录
             keepAlive: false

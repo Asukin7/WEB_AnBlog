@@ -9,17 +9,17 @@
           <div v-if="$route.name=='homeBlogListState2'">
             <Button @click="goBlogView(row.id)" type="success" size="small" style="margin-right: 5px;">预览</Button>
             <Button @click="changeBlogState(index, 0)" type="primary" size="small" style="margin-right: 5px;">恢复到草稿箱</Button>
-            <Button @click="deleteBlog(row.id)" type="error" size="small">彻底删除</Button>
+            <Button @click="deleteBlog(row.id)" type="error" size="small" style="margin-right: 5px;">彻底删除</Button>
           </div>
           <div v-else>
             <Button @click="goBlogView(row.id)" type="success" size="small" style="margin-right: 5px;">预览</Button>
             <Button @click="goBlogEdit(row.id)" type="primary" size="small" style="margin-right: 5px;">编辑</Button>
-            <Button @click="changeBlogState(index, 2)" type="error" size="small">删除</Button>
+            <Button @click="changeBlogState(index, 2)" type="error" size="small" style="margin-right: 5px;">删除</Button>
           </div>
         </template>
       </Table>
     </div>
-    <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+    <div style="margin-top: 10px; display: flex; justify-content: flex-end; align-items: center;">
       <Page @on-change="pageChange" :total="blogTotal" :current="page" :page-size="size"/>
     </div>
   </div>
@@ -50,10 +50,14 @@ export default {
     }
   },
   mounted () {
+    this.page = 1
+    this.size = 10
     this.getBlogList()
   },
   watch: {
     '$route' (to, from) {
+      this.page = 1
+      this.size = 10
       this.getBlogList()
     }
   },

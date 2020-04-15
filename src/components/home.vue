@@ -13,16 +13,16 @@
               <span>账号</span>
             </template>
             <MenuItem name="homeUserInfoEdit"><span>资料</span></MenuItem>
-            <MenuItem name="1-2"><span>安全</span></MenuItem>
+            <MenuItem name="homeUserSafeEdit"><span>安全</span></MenuItem>
           </Submenu>
-          <Submenu name="2">
+          <!-- <Submenu name="2">
             <template slot="title">
               <Icon type="ios-mail" />
               <span>通知</span>
             </template>
             <MenuItem name="2-1"><span>未读</span></MenuItem>
             <MenuItem name="2-2"><span>已读</span></MenuItem>
-          </Submenu>
+          </Submenu> -->
           <Submenu name="3">
             <template slot="title">
               <Icon type="ios-paper" />
@@ -66,13 +66,13 @@
           </Submenu> -->
         </Menu>
       </Sider>
-      <Layout style="height: 100%;">
-        <Header :style="{padding: 0}" class="layout-header-bar">
-          <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu" size="24"></Icon>
+      <Layout style="height: 100%; background: #f2f2f2;">
+        <Header class="layout-header-bar">
+          <Icon @click.native="collapsedSider" :class="rotateIcon" style="margin: 0px 20px;" type="md-menu" size="24"></Icon>
           <Button @click="logout">注销{{user==null?'':user.nickname}}</Button>
           {{$route.name}}
         </Header>
-        <Content :style="{padding: '20px', background: '#f2f2f2'}">
+        <Content style="padding: 20px;">
           <template>
             <keep-alive>
               <router-view v-if="$route.meta.keepAlive"></router-view>
@@ -134,6 +134,10 @@ export default {
           this.$router.push({path: '/home/user/info/edit'})
           break
         }
+        case 'homeUserSafeEdit': {
+          this.$router.push({path: '/home/user/safe/edit'})
+          break
+        }
         case 'homeBlogEditHtmlInsert': {
           this.$router.push({path: '/home/blog/edit/html'})
           break
@@ -158,22 +162,15 @@ export default {
 <style>
 .layout{
   height: 100vh;
-  border: 0px solid #d7dde4;
-  background: #f5f7f9;
-  position: relative;
-  border-radius: 4px;
-  overflow: hidden;
 }
 .layout-header-bar{
-  background: #fff;
-  box-shadow: 0 1px 1px rgba(0,0,0,.1);
-}
-.layout-logo-left{
-  width: 90%;
-  height: 30px;
-  background: #5b6270;
-  border-radius: 3px;
-  margin: 15px auto;
+  padding: 0px !important;
+  background: #fff !important;
+  box-shadow: 0px 2px 10px #cccccc !important;
+  overflow: hidden !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
 }
 .menu-icon{
   transition: all .3s;

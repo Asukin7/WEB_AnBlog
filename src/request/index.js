@@ -7,7 +7,8 @@ import router from '../router'
 var instance = axios.create()
 
 instance.defaults.baseURL = 'http://localhost:8081/AnBlog'
-instance.defaults.timeout = 10000
+// instance.defaults.baseURL = 'https://nnsststt.cn/AnBlog'
+instance.defaults.timeout = 60000
 
 // 请求拦截器
 instance.interceptors.request.use(

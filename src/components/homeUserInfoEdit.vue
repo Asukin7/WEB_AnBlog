@@ -1,52 +1,52 @@
 <template>
   <div>
     <Card>
-      <div class="CenterAlign" style="margin: 20px auto;">
-        <div>
-          <Upload
-            action="http://localhost:8081/AnBlog/image/upload"
-            name="image"
-            accept="image/jpeg, image/png"
-            :headers="headers"
-            :format="['jpg','jpeg','png']"
-            :max-size="2048"
-            :show-upload-list="false"
-            :on-error="handleError"
-            :on-format-error="handleFormatError"
-            :on-exceeded-size="handleMaxSizeError"
-            :on-success="profilePhotoUploadSuccess">
-            <img class="imageUpdate profilePhotoImg" :src="user.profilePhoto==null?'':user.profilePhoto"/>
-          </Upload>
-          <div class="CenterAlign" style="margin: 5px auto;">头像</div>
-        </div>
-      </div>
-      <div class="CenterAlign" style="margin: 10px auto;">
-        <div style="margin: auto 10px;">昵称</div><Input v-model="user.nickname" placeholder="请输入" maxlength="16" show-word-limit style="width: 90%;"/>
-      </div>
-      <div class="CenterAlign" style="margin: 10px auto;">
-        <div style="margin: auto 10px;">简介</div><Input v-model="user.introduction" placeholder="请输入" maxlength="64" show-word-limit style="width: 90%;"/>
-      </div>
-      <div class="CenterAlign" style="margin: 20px auto;">
-        <div>
-          <Upload
-            action="http://localhost:8081/AnBlog/image/upload"
-            name="image"
-            accept="image/jpeg, image/png"
-            :headers="headers"
-            :format="['jpg','jpeg','png']"
-            :max-size="2048"
-            :show-upload-list="false"
-            :on-error="handleError"
-            :on-format-error="handleFormatError"
-            :on-exceeded-size="handleMaxSizeError"
-            :on-success="appreciationCodeUploadSuccess">
-            <img class="imageUpdate appreciationCodeImg" :src="user.appreciationCode==null?'':user.appreciationCode"/>
-          </Upload>
-          <div class="CenterAlign" style="margin: 5px auto;">赞赏码</div>
-        </div>
-      </div>
-      <div class="CenterAlign" style="margin: 10px auto;">
-        <Button @click="saveUserInfo">保存</Button>
+      <div style="padding: 20px">
+        <Form ref="user" :model="user" :rules="userRules" label-position="left" :label-width="60">
+          <FormItem prop="profilePhoto" class="flex-center">
+            <Upload
+              action="https://nnsststt.cn/AnBlog/image/upload"
+              name="image"
+              accept="image/jpeg, image/png"
+              :headers="headers"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :show-upload-list="false"
+              :on-error="handleError"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSizeError"
+              :on-success="profilePhotoUploadSuccess">
+              <img class="imageUpdate profilePhotoImg" :src="user.profilePhoto==null?'':user.profilePhoto"/>
+            </Upload>
+            <div class="flex-center">头像</div>
+          </FormItem>
+          <FormItem label="昵称" prop="nickname">
+            <Input type="text" maxlength="16" v-model="user.nickname" placeholder="请输入" show-word-limit/>
+          </FormItem>
+          <FormItem label="简介">
+            <Input type="text" maxlength="64" v-model="user.introduction" placeholder="请输入" show-word-limit/>
+          </FormItem>
+          <FormItem prop="appreciationCode" class="flex-center">
+            <Upload
+              action="https://nnsststt.cn/AnBlog/image/upload"
+              name="image"
+              accept="image/jpeg, image/png"
+              :headers="headers"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :show-upload-list="false"
+              :on-error="handleError"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSizeError"
+              :on-success="appreciationCodeUploadSuccess">
+              <img class="imageUpdate appreciationCodeImg" :src="user.appreciationCode==null?'':user.appreciationCode"/>
+            </Upload>
+            <div class="flex-center">赞赏码</div>
+          </FormItem>
+          <FormItem class="flex-center">
+            <Button @click="saveUserInfo">保存</Button>
+          </FormItem>
+        </Form>
       </div>
     </Card>
   </div>
@@ -61,11 +61,32 @@ export default {
         introduction: null,
         profilePhoto: null,
         appreciationCode: null
+      },
+      userRules: {
+        nickname: [
+          {
+            required: true,
+            message: '请填写昵称',
+            trigger: 'blur'
+          }
+        ],
+        profilePhoto: [
+          {
+            required: true,
+            message: '请上传头像'
+          }
+        ],
+        appreciationCode: [
+          {
+            required: true,
+            message: '请上传赞赏码'
+          }
+        ]
       }
     }
   },
   mounted () {
-    this.headers = {Authorization: localStorage.getItem('token')}
+    this.headers = { Authorization: localStorage.getItem('token') }
     this.getUserInfo()
   },
   methods: {
@@ -80,22 +101,42 @@ export default {
         })
     },
     saveUserInfo () {
-      this.$put('/user/info', this.user)
+      this.$refs['user'].validate((valid) => {
+        if (valid) {
+          this.$put('/user/info', this.user)
+            .then(data => {
+              if (data.data.code === 0) { // 成功
+                this.$Message.success(data.data.message) // 提示
+              } else { // 失败
+                this.$Message.error(data.data.message) // 提示
+              }
+            })
+        } else {
+          this.$Message.error('请检查信息填写')
+        }
+      })
+    },
+    profilePhotoUploadSuccess (res) {
+      this.$put('/user/info', { profilePhoto: res.data.imgUrl })
         .then(data => {
           if (data.data.code === 0) { // 成功
+            this.user.profilePhoto = res.data.imgUrl
             this.$Message.success(data.data.message) // 提示
           } else { // 失败
             this.$Message.error(data.data.message) // 提示
           }
         })
     },
-    profilePhotoUploadSuccess (res) {
-      this.user.profilePhoto = res.data.imgUrl
-      this.$Message.success('文件上传成功')
-    },
     appreciationCodeUploadSuccess (res) {
-      this.user.appreciationCode = res.data.imgUrl
-      this.$Message.success('文件上传成功')
+      this.$put('/user/info', { appreciationCode: res.data.imgUrl })
+        .then(data => {
+          if (data.data.code === 0) { // 成功
+            this.user.appreciationCode = res.data.imgUrl
+            this.$Message.success(data.data.message) // 提示
+          } else { // 失败
+            this.$Message.error(data.data.message) // 提示
+          }
+        })
     },
     handleError () {
       this.$Message.error('文件上传失败')
@@ -110,7 +151,7 @@ export default {
 }
 </script>
 <style>
-.CenterAlign {
+.flex-center {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -16,7 +16,7 @@
     </Col>
     <Col :xs="24" :lg="16">
       <List class="list margin-top margin-left margin-right" item-layout="vertical" border>
-        <div class="list-item border-bottom" v-for="item in blogList" :key="item.title" @click="goBlogView(item.id)">
+        <div class="list-item list-item-border" v-for="item in blogList" :key="item.id" @click="goBlogView(item.id)">
           <ListItem>
             <div class="text-title margin-bottom">
               {{item.title}}
@@ -24,14 +24,14 @@
             <div class="text-summary twoLineText margin-bottom">
               {{item.summary}}
             </div>
-            <div class="infoAndOper">
-              <div class="infoAndOper-item">
+            <div class="flex-between">
+              <div class="flex-center">
                 <Avatar class="margin-right" :src="item.user.profilePhoto" icon="ios-person" size="small"/>
                 <div>{{item.user.nickname}}</div>
               </div>
-              <div class="infoAndOper-item">
+              <div class="flex-center">
                 <div class="margin-right"><Icon type="ios-eye-outline"/> {{item.viewNumber==null?'0':item.viewNumber}}</div>
-                <!-- <div class="margin-left margin-right"><Icon type="ios-thumbs-up-outline"/> 222</div> -->
+                <div class="margin-left margin-right"><Icon type="ios-thumbs-up-outline"/> {{item.likeNumber==null?'0':item.likeNumber}}</div>
                 <div class="margin-left"><Icon type="ios-chatbubbles-outline"/> {{item.commentNumber==null?'0':item.commentNumber}}</div>
               </div>
             </div>
@@ -81,9 +81,9 @@ export default {
     getBlogList () {
       var categoryQuery = ''
       if (this.categoryIdAction != null) {
-        categoryQuery = '?categoryId=' + this.categoryIdAction
+        categoryQuery = '&categoryId=' + this.categoryIdAction
       }
-      this.$get('/tourist/blogList' + categoryQuery)
+      this.$get('/tourist/blogList' + '?orderLikeNumber=true' + categoryQuery)
         .then(data => {
           this.blogList = data.data.data.blogList
           this.blogTotal = data.data.data.blogTotal
@@ -95,7 +95,7 @@ export default {
         categoryQuery = '&categoryId=' + this.categoryIdAction
       }
       this.page++
-      this.$get('/tourist/blogList' + '?page=' + this.page + '&size=' + this.size + categoryQuery)
+      this.$get('/tourist/blogList' + '?orderLikeNumber=true' + '&page=' + this.page + '&size=' + this.size + categoryQuery)
         .then(data => {
           this.blogList = this.blogList.concat(data.data.data.blogList)
           this.blogTotal = data.data.data.blogTotal
