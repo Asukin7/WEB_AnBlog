@@ -7,7 +7,7 @@
             <Icon type="ios-home" />
             <span>首页</span>
           </MenuItem>
-          <Submenu name="1">
+          <Submenu name="user">
             <template slot="title">
               <Icon type="ios-contact" />
               <span>账号</span>
@@ -15,15 +15,7 @@
             <MenuItem name="homeUserInfoEdit"><span>资料</span></MenuItem>
             <MenuItem name="homeUserSafeEdit"><span>安全</span></MenuItem>
           </Submenu>
-          <!-- <Submenu name="2">
-            <template slot="title">
-              <Icon type="ios-mail" />
-              <span>通知</span>
-            </template>
-            <MenuItem name="2-1"><span>未读</span></MenuItem>
-            <MenuItem name="2-2"><span>已读</span></MenuItem>
-          </Submenu> -->
-          <Submenu name="3">
+          <Submenu name="blog">
             <template slot="title">
               <Icon type="ios-paper" />
               <span>博客</span>
@@ -33,30 +25,38 @@
             <MenuItem name="homeBlogListState1"><span>已发表</span></MenuItem>
             <MenuItem name="homeBlogListState2"><span>回收站</span></MenuItem>
           </Submenu>
+          <!-- <Submenu name="1">
+            <template slot="title">
+              <Icon type="ios-mail" />
+              <span>通知</span>
+            </template>
+            <MenuItem name="1-1"><span>未读</span></MenuItem>
+            <MenuItem name="1-2"><span>已读</span></MenuItem>
+          </Submenu> -->
           <!-- <Submenu name="2">
             <template slot="title">
               <Icon type="ios-people" />
               <span>用户管理</span>
             </template>
             <MenuItem name="2-1"><span>用户</span></MenuItem>
-          </Submenu>
-          <Submenu name="3">
-            <template slot="title">
-              <Icon type="ios-chatboxes" />
-              <span>通知管理</span>
-            </template>
-            <MenuItem name="3-1"><span>通知</span></MenuItem>
-          </Submenu>
-          <Submenu name="4">
+          </Submenu> -->
+          <!-- <Submenu name="3">
             <template slot="title">
               <Icon type="ios-list" />
               <span>博客管理</span>
             </template>
-            <MenuItem name="4-1"><span>博客</span></MenuItem>
-            <MenuItem name="4-2"><span>评论</span></MenuItem>
-            <MenuItem name="4-3"><span>分类</span></MenuItem>
-          </Submenu>
-          <Submenu name="5">
+            <MenuItem name="3-1"><span>博客</span></MenuItem>
+            <MenuItem name="3-2"><span>评论</span></MenuItem>
+            <MenuItem name="3-3"><span>分类</span></MenuItem>
+          </Submenu> -->
+          <!-- <Submenu name="4">
+            <template slot="title">
+              <Icon type="ios-chatboxes" />
+              <span>通知管理</span>
+            </template>
+            <MenuItem name="4-1"><span>通知</span></MenuItem>
+          </Submenu> -->
+          <!-- <Submenu name="5">
             <template slot="title">
               <Icon type="ios-settings" />
               <span>系统管理</span>

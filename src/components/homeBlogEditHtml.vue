@@ -115,7 +115,7 @@ export default {
     setEditor () {
       this.editor = new E('#editor')
       this.editor.customConfig.zIndex = 0 // 配置编辑区域的 z-index
-      this.editor.customConfig.uploadImgServer = 'https://nnsststt.cn/AnBlog/image/upload' // 上传图片到服务器 配置服务器端地址
+      this.editor.customConfig.uploadImgServer = 'https://nnsststt.cn/AnBlog/user/image/upload' // 上传图片到服务器 配置服务器端地址
       this.editor.customConfig.uploadImgHeaders = {
         'Authorization': localStorage.getItem('token')
       }

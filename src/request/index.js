@@ -1,7 +1,6 @@
 import axios from 'axios'
 // import qs from 'qs'
 import router from '../router'
-// import store from '../store'
 
 // 创建axios实例
 var instance = axios.create()

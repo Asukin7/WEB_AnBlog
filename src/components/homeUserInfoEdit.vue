@@ -5,7 +5,7 @@
         <Form ref="user" :model="user" :rules="userRules" label-position="left" :label-width="60">
           <FormItem prop="profilePhoto" class="flex-center">
             <Upload
-              action="https://nnsststt.cn/AnBlog/image/upload"
+              action="https://nnsststt.cn/AnBlog/user/image/upload"
               name="image"
               accept="image/jpeg, image/png"
               :headers="headers"
@@ -28,7 +28,7 @@
           </FormItem>
           <FormItem prop="appreciationCode" class="flex-center">
             <Upload
-              action="https://nnsststt.cn/AnBlog/image/upload"
+              action="https://nnsststt.cn/AnBlog/user/image/upload"
               name="image"
               accept="image/jpeg, image/png"
               :headers="headers"
