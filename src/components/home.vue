@@ -33,13 +33,13 @@
             <MenuItem name="1-1"><span>未读</span></MenuItem>
             <MenuItem name="1-2"><span>已读</span></MenuItem>
           </Submenu> -->
-          <!-- <Submenu name="2">
+          <Submenu name="adminUser" v-if="existRoleName('admin')">
             <template slot="title">
               <Icon type="ios-people" />
               <span>用户管理</span>
             </template>
-            <MenuItem name="2-1"><span>用户</span></MenuItem>
-          </Submenu> -->
+            <MenuItem name="homeAdminUserList"><span>用户</span></MenuItem>
+          </Submenu>
           <!-- <Submenu name="3">
             <template slot="title">
               <Icon type="ios-list" />
@@ -89,7 +89,8 @@ export default {
   data () {
     return {
       isCollapsed: false,
-      user: null
+      user: null,
+      roleList: []
     }
   },
   mounted () {
@@ -97,6 +98,14 @@ export default {
       .then(data => {
         if (data.data.code === 0) { // 成功
           this.user = data.data.data.user
+        } else { // 失败
+          this.$Message.error(data.data.message) // 提示
+        }
+      })
+    this.$get('/user/roleList')
+      .then(data => {
+        if (data.data.code === 0) { // 成功
+          this.roleList = data.data.data.roleList
         } else { // 失败
           this.$Message.error(data.data.message) // 提示
         }
@@ -154,7 +163,17 @@ export default {
           this.$router.push({path: '/home/blogList/state/2'})
           break
         }
+        case 'homeAdminUserList': {
+          this.$router.push({path: '/home/admin/userList'})
+          break
+        }
       }
+    },
+    existRoleName (roleName) {
+      for (let index = 0; index < this.roleList.length; index++) {
+        if (this.roleList[index].name === roleName) return true
+      }
+      return false
     }
   }
 }

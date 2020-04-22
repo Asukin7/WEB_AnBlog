@@ -12,6 +12,7 @@ import homeUserInfoEdit from '@/components/homeUserInfoEdit'
 import homeUserSafeEdit from '@/components/homeUserSafeEdit'
 import homeBlogEditHtml from '@/components/homeBlogEditHtml'
 import homeBlogListState from '@/components/homeBlogListState'
+import homeAdminUserList from '@/components/homeAdminUserList'
 
 Vue.use(Router)
 
@@ -145,6 +146,26 @@ export default new Router({
           path: 'blogList/state/2',
           name: 'homeBlogListState2',
           component: homeBlogListState,
+          meta: {
+            isLogin: true, // 需要登录
+            keepAlive: false
+          }
+        }
+      ]
+    },
+    // homeAdminUser
+    {
+      path: '/home',
+      name: 'homeAdminUser',
+      component: home,
+      meta: {
+        isLogin: true // 需要登录
+      },
+      children: [
+        {
+          path: 'admin/userList',
+          name: 'homeAdminUserList',
+          component: homeAdminUserList,
           meta: {
             isLogin: true, // 需要登录
             keepAlive: false
